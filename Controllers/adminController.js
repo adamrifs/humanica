@@ -17,16 +17,15 @@ const addAdmin = async (req, res) => {
         console.log('New admin registered:', saveddata);
 
         const mailOptions = {
-            from: process.env.EMAIL_USER, // Replace with your email
-            to: saveddata.email,          // Admin's email
-            subject: 'Welcome to Our Service',
-            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\nPassword: ${saveddata.password}\n\nPlease keep this information safe.\n\nBest regards,\nHumanica`
+            from: process.env.EMAIL_USER,
+            to: saveddata.email,
+            subject: 'Welcome to Humanica!',
+            text: `Hello ${saveddata.name},\n\nThank you for registering with Humanica! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\nPassword: ${saveddata.password}\n\nPlease keep this information safe.\n\nBest regards,\nHumanica`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log('Error sending email:', error);
-                // Even if email fails, we return a success response for the registration
                 return res.status(200).json({
                     message: 'Admin registered successfully, but email sending failed.',
                     error: error.message
@@ -103,6 +102,7 @@ const addWorkExperience = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
 //update and delete workexperience
 const editWorkExperience = async (req, res) => {
     try {
@@ -146,30 +146,6 @@ const deleteWorkExperience = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
-
-
-
-// adminController.js
-
-// Add Work Experience
-// const addWorkExperience = async (req, res) => {
-//     try {
-//         const { adminId } = req.params;
-//         const { company, title, location, startdate, enddate, description } = req.body;
-
-//         const admin = await admindetails.findById(adminId);
-//         if (!admin) return res.status(404).send('Admin not found');
-
-//         admin.workExperience.push({ company, title, location, startdate, enddate, description });
-//         await admin.save();
-
-//         res.status(200).json(admin);
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send('Server error');
-//     }
-// };
-// adminController.js
 
 // Get Admin by ID with Work Experience
 const getAdminById = async (req, res) => {
@@ -411,7 +387,7 @@ const addCertification = async (req, res) => {
     try {
         const { adminId } = req.params;
         const { crname, crdate, description } = req.body;
-        // const file = req.file.filename; // Assuming you're using a file upload middleware like multer
+        // const file = req.file.filename; // Assuming using a file upload middleware like multer
 
         const admin = await admindetails.findById(adminId);
         if (!admin) return res.status(404).send('Admin not found');
@@ -583,10 +559,10 @@ const deleteSocialId = async (req, res) => {
             return res.status(404).send('Admin not found');
         }
 
-        admin.socialid = ''; // Remove the socialid field
+        admin.socialid = ''; 
         await admin.save();
 
-        res.status(200).json({ message: 'Social Security ID deleted successfully', admin }); // Send a success message and the updated admin data
+        res.status(200).json({ message: 'Social Security ID deleted successfully', admin }); 
     } catch (error) {
         console.log('Error deleting Social ID:', error);
         res.status(500).send('Server error');
