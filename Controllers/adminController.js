@@ -1,13 +1,48 @@
 const admindetails = require('../Models/adminSchema')
+const nodemailer = require('nodemailer');
+require('dotenv').config();
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
 const addAdmin = async (req, res) => {
     try {
         const admindata = new admindetails(req.body)
         const saveddata = await admindata.save()
-        res.status(200).json(saveddata)
+        console.log('New admin registered:', saveddata);
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER, // Replace with your email
+            to: saveddata.email,          // Admin's email
+            subject: 'Welcome to Our Service',
+            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\n\nPlease keep this information safe.\n\nBest regards,\nYour Company`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+                // Even if email fails, we return a success response for the registration
+                return res.status(200).json({
+                    message: 'Admin registered successfully, but email sending failed.',
+                    error: error.message
+                });
+            } else {
+                console.log('Email sent:', info.response);
+                res.status(200).json({
+                    message: 'Admin registered successfully and email sent!',
+                    data: saveddata
+                });
+            }
+        });
     }
     catch (error) {
-        console.log(error)
+        console.error('Error during registration:', error);
+        res.status(500).send('Server error during registration.');
     }
 }
 
@@ -20,6 +55,7 @@ const getAdmin = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
 const getAdminDetails = async (req, res) => {
     try {
         const { id } = req.params;
@@ -709,5 +745,5 @@ module.exports = {
     addSkill, addLanguage, addCertification, addReference, addSocialId, addIndustryExperience, addPlaceToWork, getPlacesToWork,
     editWorkExperience, deleteWorkExperience, deleteEducation, editEducation, editSkill, deleteSkill, editLanguage, deleteLanguage,
     editCertification, deleteCertification, editReference, deleteReference, editSocialId, deleteSocialId, editIndustryExperience,
-    deleteIndustryExperience,editPlaceToWork, deletePlaceToWork
+    deleteIndustryExperience, editPlaceToWork, deletePlaceToWork,
 }

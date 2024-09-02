@@ -20,6 +20,7 @@ router.post('/addIndustryExperience/:adminId', adminController.addIndustryExperi
 router.post('/addPlaceToWork/:adminId', adminController.addPlaceToWork)
 router.get('/getPlacesToWork/:adminId', adminController.getPlacesToWork)
 
+
 router.put('/editWorkExperience/:adminId/:index', adminController.editWorkExperience);
 router.delete('/deleteWorkExperience/:adminId/:index', adminController.deleteWorkExperience);
 router.put('/editEducation/:adminId/:index', adminController.editEducation);

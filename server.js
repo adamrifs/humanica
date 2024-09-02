@@ -4,6 +4,7 @@ const connectDB = require('./Config/db')
 const calenderRoutes = require('./Routes/calenderRoutes')
 const workRoutes = require('./Routes/workRoutes')
 const adminRoutes = require('./Routes/adminRoutes')
+const ipaddressRoutes = require('./Routes/ipaddressRoutes')
 require('dotenv').config()
 
 const app = express()
@@ -15,7 +16,8 @@ app.use(express.json())
 connectDB()
 app.use('/api/calender', calenderRoutes)
 app.use('/api/work', workRoutes)
-app.use('/api/admin/',adminRoutes)
+app.use('/api/admin',adminRoutes)
+app.use('/api/ipaddress',ipaddressRoutes)
 
 
 app.listen(port, () => {
