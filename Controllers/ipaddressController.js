@@ -14,4 +14,15 @@ const addIp = async (req, res) => {
     }
 }
 
-module.exports = { addIp }
+const getIp = async (req, res) => {
+    try {
+        const ipDetails = await ipaddress.find()
+        res.status(200).send(ipDetails)
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Failed to retrieve IP addresses' });
+    }
+}
+
+module.exports = { addIp, getIp }
