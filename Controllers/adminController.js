@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -20,7 +20,7 @@ const addAdmin = async (req, res) => {
             from: process.env.EMAIL_USER, // Replace with your email
             to: saveddata.email,          // Admin's email
             subject: 'Welcome to Our Service',
-            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\n\nPlease keep this information safe.\n\nBest regards,\nYour Company`
+            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\n\nPlease keep this information safe.\n\nBest regards,\nHumanica`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
