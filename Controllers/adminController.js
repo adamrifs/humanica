@@ -20,7 +20,7 @@ const addAdmin = async (req, res) => {
             from: process.env.EMAIL_USER, // Replace with your email
             to: saveddata.email,          // Admin's email
             subject: 'Welcome to Our Service',
-            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\n\nPlease keep this information safe.\n\nBest regards,\nHumanica`
+            text: `Hello ${saveddata.name},\n\nThank you for registering! Here are your credentials:\n\nUsername: ${saveddata.name}\nEmail: ${saveddata.email}\nPassword: ${saveddata.password}\n\nPlease keep this information safe.\n\nBest regards,\nHumanica`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
