@@ -26,9 +26,8 @@ const adddata = async (req, res) => {
 }
 
 const getdata = async (req, res) => {
-    const { date } = req.query; // Extract date from query params
+    const { date } = req.query; 
     try {
-        // Find data for the specific date
         const calenderData = await calender.findOne({ date });
         if (!calenderData) {
             return res.status(404).send({ message: 'Data not found for the specified date' });

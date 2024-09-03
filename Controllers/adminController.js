@@ -83,16 +83,13 @@ const addWorkExperience = async (req, res) => {
         const { adminId } = req.params;
         const { company, title, location, startdate, enddate, description } = req.body;
 
-        // Validate input
         if (!adminId || !company || !title || !location || !startdate) {
             return res.status(400).send('Missing required fields');
         }
 
-        // Find admin
         const admin = await admindetails.findById(adminId);
         if (!admin) return res.status(404).send('Admin not found');
 
-        // Add work experience
         admin.workExp.push({ company, title, location, startdate, enddate, description });
         await admin.save();
 
@@ -112,7 +109,6 @@ const editWorkExperience = async (req, res) => {
         const admin = await admindetails.findById(adminId);
         if (!admin) return res.status(404).send('Admin not found');
 
-        // Update the specific work experience entry
         if (admin.workExp[index]) {
             admin.workExp[index] = { company, title, location, startdate, enddate, description };
             await admin.save();
