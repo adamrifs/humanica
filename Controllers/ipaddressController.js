@@ -2,8 +2,12 @@ const ipaddress = require('../Models/ipaddressSchema')
 
 const addIp = async (req, res) => {
     try {
-        const { ip, date } = req.body
-        const ipdata = new ipaddress({ ip, date })
+        const { ip, date, country } = req.body; 
+        const ipdata = new ipaddress({
+            ip,
+            date: new Date(date),
+            country 
+        });
         console.log("IpData", ipdata);
 
         await ipdata.save()
@@ -11,6 +15,7 @@ const addIp = async (req, res) => {
     }
     catch (error) {
         console.log(error)
+        res.status(500).send('Failed to save IP address and country');
     }
 }
 
