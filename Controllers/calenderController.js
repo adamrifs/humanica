@@ -39,4 +39,17 @@ const getdata = async (req, res) => {
     }
 };
 
-module.exports = {adddata,getdata}
+// In your backend file
+
+const getDatesWithData = async (req, res) => {
+    try {
+        const entries = await calender.find({});
+        const dates = entries.map(entry => entry.date);
+        res.status(200).json(dates);
+    } catch (error) {
+        console.error('Error fetching dates with data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+module.exports = { adddata, getdata, getDatesWithData };

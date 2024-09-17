@@ -45,6 +45,34 @@ const addAdmin = async (req, res) => {
     }
 }
 
+const changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        const { id } = req.params; // Assuming you pass the admin ID as a URL parameter
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).send('Current and new passwords are required.');
+        }
+
+        const admin = await admindetails.findById(id);
+        if (!admin) return res.status(404).send('Admin not found.');
+
+        if (currentPassword !== admin.password) {
+            return res.status(400).send('Current password is incorrect.');
+        }
+
+        admin.password = newPassword;
+        await admin.save();
+
+        res.status(200).send('Password changed successfully.');
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).send('Server error.');
+    }
+};
+
+
+
 const getAdmin = async (req, res) => {
     try {
         const admins = await admindetails.find();
@@ -717,5 +745,5 @@ module.exports = {
     addSkill, addLanguage, addCertification, addReference, addSocialId, addIndustryExperience, addPlaceToWork, getPlacesToWork,
     editWorkExperience, deleteWorkExperience, deleteEducation, editEducation, editSkill, deleteSkill, editLanguage, deleteLanguage,
     editCertification, deleteCertification, editReference, deleteReference, editSocialId, deleteSocialId, editIndustryExperience,
-    deleteIndustryExperience, editPlaceToWork, deletePlaceToWork,
+    deleteIndustryExperience, editPlaceToWork, deletePlaceToWork, changePassword
 }
