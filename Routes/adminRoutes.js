@@ -19,7 +19,9 @@ router.post('/addSocialId/:adminId', adminController.addSocialId)
 router.post('/addIndustryExperience/:adminId', adminController.addIndustryExperience)
 router.post('/addPlaceToWork/:adminId', adminController.addPlaceToWork)
 router.get('/getPlacesToWork/:adminId', adminController.getPlacesToWork)
-router.post('/changePassword/:id', adminController.changePassword)
+// router.post('/changePassword/:id', adminController.changePassword)
+router.post('/changePassword/:userId', adminController.changePassword);
+
 
 
 

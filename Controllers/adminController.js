@@ -45,31 +45,63 @@ const addAdmin = async (req, res) => {
     }
 }
 
+
 const changePassword = async (req, res) => {
+    console.log('Request Body:', req.body);  // Log the incoming request body
+    console.log('User ID Param:', req.params.userId);  // Log the user ID from URL
+    const { currentPassword, newPassword } = req.body;
+    const { userId } = req.params; // Get userId from URL params
+
     try {
-        const { currentPassword, newPassword } = req.body;
-        const { id } = req.params; // Assuming you pass the admin ID as a URL parameter
-
-        if (!currentPassword || !newPassword) {
-            return res.status(400).send('Current and new passwords are required.');
+        // Find the user by ID
+        const admin = await admindetails.findById(userId);
+        if (!admin) {
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        const admin = await admindetails.findById(id);
-        if (!admin) return res.status(404).send('Admin not found.');
-
+        // Check if current password matches the user's current password
         if (currentPassword !== admin.password) {
-            return res.status(400).send('Current password is incorrect.');
+            return res.status(400).json({ success: false, message: 'Current password is incorrect' });
         }
 
+        // Directly update the user's password without hashing
         admin.password = newPassword;
         await admin.save();
 
-        res.status(200).send('Password changed successfully.');
+        res.status(200).json({ success: true, message: 'Password changed successfully' });
     } catch (error) {
         console.error('Error changing password:', error);
-        res.status(500).send('Server error.');
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
+
+
+// const changePassword = async (req, res) => {
+//     try {
+//         const { currentPassword, newPassword } = req.body;
+//         const { id } = req.params; // Assuming you pass the admin ID as a URL parameter
+
+//         if (!currentPassword || !newPassword) {
+//             return res.status(400).send('Current and new passwords are required.');
+//         }
+
+//         const admin = await admindetails.findById(id);
+//         if (!admin) return res.status(404).send('Admin not found.');
+
+//         if (currentPassword !== admin.password) {
+//             return res.status(400).send('Current password is incorrect.');
+//         }
+
+//         admin.password = newPassword;
+//         await admin.save();
+
+//         res.status(200).send('Password changed successfully.');
+//     } catch (error) {
+//         console.error('Error changing password:', error);
+//         res.status(500).send('Server error.');
+//     }
+// };
 
 
 
